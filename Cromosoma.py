@@ -11,6 +11,14 @@ class Cromosoma:
 	def __iter__(self):
 		return iter(self.cromosoma)
 
+	#permite imprimir el cromosoma
+	def __str__(self):
+		temp = ""
+		for i in self.cromosoma:
+			temp += i.__str__()
+		return temp
+
+
 	def value(self):
 		val = 0
 		for i in range(5):
