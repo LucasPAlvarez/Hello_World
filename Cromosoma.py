@@ -18,6 +18,9 @@ class Cromosoma:
 			temp += i.__str__()
 		return temp
 
+	def __getitem__(self, index):
+		return self.cromosoma[index]
+
 
 	def value(self):
 		val = 0

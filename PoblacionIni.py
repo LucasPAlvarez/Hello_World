@@ -19,8 +19,6 @@ class PoblacionIni:
 			for j in i:
 				temp += j.__str__()
 
-			temp += "\n"
-
 		return temp
 
 	def __getitem__(self, index):
@@ -40,15 +38,15 @@ class PoblacionIni:
 
 	def ruleta(self):
 		x=random.random()
-		sum = float(self.fitness(0))
+		sum = float(self.fitness(self.poblacion[0]))
 		if x <sum:
 			return self.poblacion[0]
 		else:
-			sum += float(self.fitness(1))
+			sum += float(self.fitness(self.poblacion[1]))
 			if x < sum:
 				return self.poblacion[1]
 			else:
-				sum += float(self.fitness(2))
+				sum += float(self.fitness(self.poblacion[2]))
 				if x < sum:
 					return self.poblacion[2]
 				else:
@@ -59,22 +57,31 @@ class PoblacionIni:
 		for i in range(4):
 			self.fathers.append(self.ruleta())
 
-	def crossover(cromosoma1, cromosoma2):
+	def crossover(self, cromosoma1, cromosoma2):
 		#devuelve un arreglo con 2 hijos 
 		temp = random.randint(0,4)
-		cromTemp1 = []
-		cromTemp2 = []
+		cromTemp1 = Cromosoma.Cromosoma()
+		cromTemp2 = Cromosoma.Cromosoma()
 
-		cromTemp1.append(cromosoma1[:temp])
-		cromTemp1.append(cromosoma2[temp:])
+		#cromosoma1.cromosoma.clear()
+		for i in range(4):
+			if i <= temp:
+				cromTemp1.cromosoma[i] = cromTemp1[i]
+			else:
+				cromTemp1.cromosoma[i] = cromTemp2[i]
 
-		cromTemp2.append(cromosoma2[:temp])
-		cromTemp2.append(cromosoma1[temp:])
+		#cromosoma2.cromosoma.clear()
+		for i in range(4):
+			if i <= temp:
+				cromTemp2.cromosoma[i] = cromTemp2[i]
+			else:
+				cromTemp2.cromosoma[i] = cromTemp1[i]
 
 		return[cromTemp1,cromTemp2]
 
 	def makeChildren(self):
 		children = []
+		self.father()
 		for i in range(2):
 			x = random.random()
 			if x<self.probCross:
@@ -100,7 +107,8 @@ class PoblacionIni:
 		maximoTemp = self.poblacion[0]
 
 		# strDevolver almacena todo lo que se va a inprimir
-		strDevolver += "generacion {0}\n\n".format(self.generacion)
+		strDevolver += "generacion {0}\n".format(self.generacion)
+		strDevolver += "══════════════\n\n"
 		strDevolver += "Cromosoma\tValor\tFuncion\tFitness\n"
 		strDevolver += "___________________________________________\n"
 
@@ -116,9 +124,9 @@ class PoblacionIni:
 			strDevolver += "{0}\n".format(self.fitness(i))
 
 		strDevolver += "___________________________________________\n"
-		strDevolver += "Suma\t\t{0}\t1\n".format(sumaTemp)
+		strDevolver += "Suma\t\t\t{0}\t1\n".format(sumaTemp)
 		strDevolver += "Promedio\t\t{0}\t0.25\n".format(sumaTemp/4)
-		strDevolver += "Maximo\t\t{0}\t{1}\n".format(maximoTemp.funcValue(), self.fitness(maximoTemp))
+		strDevolver += "Maximo\t\t\t{0}\t{1}\n".format(maximoTemp.funcValue(), self.fitness(maximoTemp))
 
 		#devuelve el string puede verse en pantalla o guardarse en un .txt
 		return strDevolver
