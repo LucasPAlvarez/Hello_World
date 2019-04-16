@@ -3,10 +3,13 @@ import math
 
 class Cromosoma:
 
-	def __init__(self):
+	def __init__(self, data = None):
 		self.cromosoma = []
-		for j in range(5):
-			self.cromosoma.append(random.randint(0,1))
+		if data == None:
+			for j in range(5):
+				self.cromosoma.append(random.randint(0,1))
+		else:
+			self.cromosoma = data
 
 	def __iter__(self):
 		return iter(self.cromosoma)
