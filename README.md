@@ -1,4 +1,4 @@
-# Hello_World
-testing
+# Project 1
+this is the first projct of Genetic Algorithm
 
-what
+here I will save the code
