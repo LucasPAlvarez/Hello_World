@@ -28,7 +28,10 @@ class Cromosoma:
 	def value(self):
 		val = 0
 		for i in range(5):
-				val += math.pow(2,i) * self.cromosoma[4-i]  
+				try:
+					val += math.pow(2,i) * self.cromosoma[4-i]  
+				except:
+					print(4-i)
 		return int(val)
 
 	def funcValue(self):
