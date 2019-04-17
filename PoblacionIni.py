@@ -33,10 +33,18 @@ class PoblacionIni:
 	def totalFitness (self):
 		total = 0
 		for i in self.poblacion:
-			total += i.funcValue()
+			try:
+				total += i.funcValue()
+			except:
+				print(i) 
 		return total
 
 	def ruleta(self):
+		Arrtemp = [0] *int(float(self.fitness(self.poblacion[0]))* 100) + [1] * int(float(self.fitness(self.poblacion[1]))* 100) + [2] * int(float(self.fitness(self.poblacion[2]))* 100) + [3] * int(float(self.fitness(self.poblacion[3]))* 100)
+		
+		return random.choice (Arrtemp)
+
+		"""
 		x=random.random()
 		sum = float(self.fitness(self.poblacion[0]))
 		if x <sum:
@@ -51,7 +59,7 @@ class PoblacionIni:
 					return self.poblacion[2]
 				else:
 					return self.poblacion[3]
-
+"""
 	def father (self):
 		self.fathers = []
 		for i in range(4):
@@ -113,15 +121,18 @@ class PoblacionIni:
 		strDevolver += "___________________________________________\n"
 
 		for i in self.poblacion:
-			strDevolver += "{0}\t\t".format(i)
-			strDevolver += "{0}\t".format(i.value())
-			strDevolver += "{0}\t".format(i.funcValue())
-			#sumaTemp almacena la suma del valor de los cromosomas evaluados en la funcion
-			sumaTemp += i.funcValue()
-			#maximo guarda el maximo de los cromosomas
-			if(maximoTemp.funcValue() < i.funcValue()):
-				maximoTemp = i
-			strDevolver += "{0}\n".format(self.fitness(i))
+			try:
+				strDevolver += "{0}\t\t".format(i)
+				strDevolver += "{0}\t".format(i.value())
+				strDevolver += "{0}\t".format(i.funcValue())
+				#sumaTemp almacena la suma del valor de los cromosomas evaluados en la funcion
+				sumaTemp += i.funcValue()
+				#maximo guarda el maximo de los cromosomas
+				if(maximoTemp.funcValue() < i.funcValue()):
+					maximoTemp = i
+				strDevolver += "{0}\n".format(self.fitness(i))
+			except:
+				print (i)
 
 		strDevolver += "___________________________________________\n"
 		strDevolver += "Suma\t\t\t{0}\t1\n".format(sumaTemp)
