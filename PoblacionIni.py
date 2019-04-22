@@ -6,12 +6,18 @@ class PoblacionIni:
 	probCross = 0.9
 	probMut = 0.001
 
-	def __init__(self):
+	def __init__(self, prevPob = [], gen = 0):
 		self.poblacion = []
-		self.generacion = 0
-		for i in range(4):
-			crom = Cromosoma.Cromosoma()				
-			self.poblacion.append(crom)
+		self.generacion = gen
+		if prevPob == []:
+			for i in range(4):
+				crom = Cromosoma.Cromosoma()				
+				self.poblacion.append(crom)
+		else:
+			for data in prevPob:
+				self.poblacion.append(Cromosoma.Cromosoma(data))
+			
+
 
 	def __str__(self):
 		temp = ""
@@ -119,7 +125,7 @@ class PoblacionIni:
 
 		# strDevolver almacena todo lo que se va a inprimir
 		strDevolver += "generacion {0}\n".format(self.generacion)
-		strDevolver += "══════════════\n\n"
+		strDevolver += "---------------\n\n"
 		strDevolver += "Cromosoma\tValor\tFuncion\tFitness\n"
 		strDevolver += "___________________________________________\n"
 

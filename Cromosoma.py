@@ -42,3 +42,7 @@ class Cromosoma:
 		#muta al azar uno de los digitos del cromosoma
 		temp = random.randint(0,4)
 		self.cromosoma[temp] = abs(self.cromosoma[temp] - 1)
+
+	def saving(self):
+		temp = " ".join(str(x) for x in self.cromosoma)
+		return temp
