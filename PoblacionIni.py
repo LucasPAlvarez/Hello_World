@@ -6,11 +6,13 @@ class PoblacionIni:
 	probCross = 0.9
 	probMut = 0.001
 
-	def __init__(self, prevPob = [], gen = 0):
+	def __init__(self, prevPob = [], gen = 0, probCross = 0.9, probMut = 0.001, cantCrom = 4):
 		self.poblacion = []
 		self.generacion = gen
+		self.probCross = probCross
+		self.probMut = probMut
 		if prevPob == []:
-			for i in range(4):
+			for i in range(cantCrom):
 				crom = Cromosoma.Cromosoma()				
 				self.poblacion.append(crom)
 		else:
@@ -46,7 +48,11 @@ class PoblacionIni:
 		return total
 
 	def ruleta(self):
-		Arrtemp = [0] *int(float(self.fitness(self.poblacion[0]))* 100) + [1] * int(float(self.fitness(self.poblacion[1]))* 100) + [2] * int(float(self.fitness(self.poblacion[2]))* 100) + [3] * int(float(self.fitness(self.poblacion[3]))* 100)
+		Arrtemp = []
+		for i in range(len(self.poblacion)):
+			Arrtemp += [i] *int(float(self.fitness(self.poblacion[i]))* 100)
+				
+		#Arrtemp = [0] *int(float(self.fitness(self.poblacion[0]))* 100) + [1] * int(float(self.fitness(self.poblacion[1]))* 100) + [2] * int(float(self.fitness(self.poblacion[2]))* 100) + [3] * int(float(self.fitness(self.poblacion[3]))* 100)
 		
 		return random.choice(Arrtemp)
 
@@ -68,26 +74,26 @@ class PoblacionIni:
 """
 	def father (self):
 		self.fathers = []
-		for i in range(4):
+		for i in range(len(self.poblacion)):
 			self.fathers.append(self.poblacion[self.ruleta()])
 
 	def crossover(self, cromosoma1, cromosoma2):
 		#devuelve un arreglo con 2 hijos 
-		temp = random.randint(0,4)
+		temp = random.randint(0,len(cromosoma2.cromosoma)-1)
 		tempCrom = []
 		#cromTemp1 = Cromosoma.Cromosoma()
 		#cromTemp2 = Cromosoma.Cromosoma()
 
 		#cromosoma1.cromosoma.clear()
-		for i in range(5):
+		for i in range(len(cromosoma2.cromosoma)):
 			if i <= temp:
 				tempCrom.append(cromosoma1[i])
 			else:
 				tempCrom.append(cromosoma2[i])
-		cromTemp1 = Cromosoma.Cromosoma(tempCrom)
+		cromTemp1 = Cromosoma.Cromosoma(tempCrom, len(cromosoma2.cromosoma))
 		tempCrom.clear()
 		#cromosoma2.cromosoma.clear()
-		for i in range(5):
+		for i in range(len(cromosoma2.cromosoma)):
 			if i <= temp:
 				tempCrom.append(cromosoma2[i])
 			else:
@@ -99,7 +105,7 @@ class PoblacionIni:
 	def makeChildren(self):
 		children = []
 		self.father()
-		for i in range(2):
+		for i in range(len(self.poblacion)//2):
 			x = random.random()
 			if x<self.probCross:
 				temp = self.crossover(self.fathers[i*2], self.fathers[(i*2)+1])
@@ -108,6 +114,11 @@ class PoblacionIni:
 			else:
 				children.append(self.fathers[i*2])
 				children.append(self.fathers[(i*2)+1])
+
+		# en el caso de que la poblacion sea impar
+		if len(self.poblacion)%2 == 1:
+			temp = self.crossover(self.fathers[len(self.fathers)-1], self.fathers[0])
+			children.append(temp[0])
 
 		for c in children:
 			x = random.random()

@@ -3,10 +3,10 @@ import math
 
 class Cromosoma:
 
-	def __init__(self, data = None):
+	def __init__(self, data = None, cant = 5):
 		self.cromosoma = []
 		if data == None:
-			for j in range(5):
+			for j in range(cant):
 				self.cromosoma.append(random.randint(0,1))
 		else:
 			self.cromosoma = data
@@ -27,11 +27,11 @@ class Cromosoma:
 
 	def value(self):
 		val = 0
-		for i in range(5):
+		for i in range(len(self.cromosoma)):
 				try:
-					val += math.pow(2,i) * self.cromosoma[4-i]  
+					val += math.pow(2,i) * self.cromosoma[(len(self.cromosoma)-1)-i]  
 				except:
-					print(4-i)
+					print((len(self.cromosoma)-1)-i)
 		return int(val)
 
 	def funcValue(self):
@@ -40,7 +40,7 @@ class Cromosoma:
 
 	def mutacion (self):
 		#muta al azar uno de los digitos del cromosoma
-		temp = random.randint(0,4)
+		temp = random.randint(0,len(self.cromosoma)-1)
 		self.cromosoma[temp] = abs(self.cromosoma[temp] - 1)
 
 	def saving(self):
