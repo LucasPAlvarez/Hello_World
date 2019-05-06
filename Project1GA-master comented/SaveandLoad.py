@@ -2,7 +2,7 @@ import PoblacionIni
 import os
 import json
 
-#funcion para guardar la poblacion
+#Funcion para guardar la poblacion
 def Saving(myPobl):
 	with open("Data/savedPob", "wb") as save:
 			print("Saving.")
@@ -16,11 +16,10 @@ def Saving(myPobl):
 			for gen in myPobl.poblacion:
 				templine = (gen.saving()+ " ").encode("utf-8")
 				save.write(templine)
-			#save.writelines(x.saving().encode("utf-8") for x in myPobl.poblacion)
 			print("Saving Done\n")
 
 
-#funcion para cargar los datos de la anterior poblacion
+#Funcion para cargar los datos de la anterior poblacion
 def Loading(cromLenght = 5, pobLength = 4):
 	load = open("Data/savedPob", "rb")
 	print("Loading.")
@@ -50,7 +49,7 @@ def Loading(cromLenght = 5, pobLength = 4):
 	print("Loading Done\n")
 	return PoblacionIni.PoblacionIni(prevPob, gen, probCross = pCross, probMut = pMut, cantCrom = pobLength)
 
-#guarda todas las generaciones para poder verlas en un archivo .txt
+#Guarda todas las generaciones para poder verlas en un archivo .txt
 def saveRecord(texto):
 	if not os.path.isfile("Data/pasado.txt"):
 		pathFile = open("Data/pasado.txt", "w")
@@ -64,9 +63,9 @@ def saveRecord(texto):
 	pathFile.close()
 
 
-#guarda todas las generaciones para poder representarlas en una grafica
+#Guarda todas las generaciones para poder representarlas en una grafica
 def saveHistory(myPobl):
-	#seting up some values to save
+	#Configura algunos valores para guardar
 	mFitness = 0
 	mValue = 0
 	for pob in myPobl.poblacion:
@@ -75,7 +74,7 @@ def saveHistory(myPobl):
 		if mValue < pob.value():
 			mValue = pob.value()
 
-	#if there is not a json file then create new data
+	#Si no hay un archivo json, entonces crea datos nuevos
 	if not os.path.isfile("Data/data.json"):
 		newData ={"totalFitness":[], "maxFitness":[], "maxValue":[]}
 		
@@ -83,7 +82,7 @@ def saveHistory(myPobl):
 		with open("Data/data.json") as jl:
 			newData = json.load(jl)
 
-	#add the new data then store it
+	#Añade los datos nuevos y luego los guarda
 	newData["totalFitness"].append(myPobl.totalFitness())
 	newData["maxFitness"].append(mFitness)
 	newData["maxValue"].append(mValue)
