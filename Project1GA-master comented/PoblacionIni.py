@@ -21,7 +21,7 @@ class PoblacionIni:
 
 
 	def __str__(self):
-		#el iluminado que lea esto digame que es, flashee y no lo recuerdo
+		#Funcion que debuelve el contenido de la poblacion como un string
 		temp = ""
 		for i in self.poblacion:
 			for j in i:
@@ -50,6 +50,7 @@ class PoblacionIni:
 		return total
 
 	def ruleta(self):
+		#Genera la ruleta
 		Arrtemp = []
 		for i in range(len(self.poblacion)):
 			Arrtemp += [i] *int(float(self.fitness(self.poblacion[i]))* 100)		
