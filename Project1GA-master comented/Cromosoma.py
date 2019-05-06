@@ -4,7 +4,7 @@ import math
 class Cromosoma:
 
 	def __init__(self, data = None, cant = 5):
-		#se crea un cromosoma vacio y se insertan 0 y 1 aleatoriamente
+		#Se crea un cromosoma vacio y se insertan 0 y 1 aleatoriamente
 		self.cromosoma = []
 		if data == None:
 			for j in range(cant):
@@ -13,22 +13,23 @@ class Cromosoma:
 			self.cromosoma = data
 
 	def __iter__(self):
-		#devuelve un cromosoma
+		#Esta funcion permite iterar en el cromosoma
 		return iter(self.cromosoma)
 
 	def __str__(self):
+		#Funcion que debuelve el contenido del croosoma como un string
 		temp = ""
 		for i in self.cromosoma:
 			temp += i.__str__()
 		return temp
 
 	def __getitem__(self, index):
-		#funcion que devuelve el valor de un cromosoma en el indice
+		#Funcion que devuelve el valor de un cromosoma en el indice
 		return self.cromosoma[index]
 
 
 	def value(self):
-		#comprueba el valor de la funcion con cada cromosoma de la poblacion
+		#Convierte el cromosoma en un numero decimal
 		val = 0
 		for i in range(len(self.cromosoma)):
 				try:
@@ -38,6 +39,7 @@ class Cromosoma:
 		return int(val)
 
 	def funcValue(self):
+		#Devuelve el valor fitness del cromosoma
 		val = math.pow(self.value(), 2)
 		return int(val)
 
