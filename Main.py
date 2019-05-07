@@ -4,7 +4,6 @@ import SaveandLoad as SL
 import Plotear as plt
 #el main crea una poblacion y es el menu de la misma
 
-
 #crea una carpeta para contener todos losdatos guardados si no existe
 if not os.path.exists("Data"):
 	os.makedirs("Data")
@@ -37,14 +36,13 @@ def nuevasgeneraciones():
 
 #funcion para mostrar graficas de barra sobre la generacion
 def plotear():
-	subject = input("que desea graficar?\n\t1)TotalFitnes\n\t2)MaxFitness\n\t3)MaxValue\n")
+	subject = input("que desea graficar?\n\t1)minValue\n\t2)Promedio\n\t3)MaxValue\n")
 	if subject == "1":
-		plt.plotear("totalFitness")
+		plt.plotear("minValue")
 	elif subject == "2":
-		plt.plotear("maxFitness")
+		plt.plotear("Promedio")
 	elif subject == "3":
 		plt.plotear("maxValue")
-
 
 
 #hace una nueva poblacion y te permite cambiar el crossover y la mutacion
@@ -74,7 +72,6 @@ def nuevaGen(myPobl):
 	else:
 		print("None 2")
 		myPobl = PoblacionIni.PoblacionIni()
-
 	
 	imprimir = myPobl.printAll()
 	print (imprimir)
@@ -98,6 +95,3 @@ while True:
 	elif c == "4":
 		SL.Saving(myPobl)
 		break
-
-
-

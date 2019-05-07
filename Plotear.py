@@ -11,10 +11,9 @@ def loadJson():
 		return temp
 
 def plotear(subject):
-
+	#funcion para plotear el avance de las generaciones
 	myInfo = loadJson()
 	max = 0
-
 
 	plt.bar(range(len(myInfo[subject])), myInfo[subject], color = "g")
 	for i in range(len(myInfo[subject])):

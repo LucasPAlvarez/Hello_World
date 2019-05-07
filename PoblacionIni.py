@@ -3,10 +3,9 @@ import Cromosoma
 
 class PoblacionIni:
 	
-	#probCross = 0.9
-	#probMut = 0.001
-
-	def __init__(self, prevPob = [], gen = 0, probCross = 0.9, probMut = 0.001, cantCrom = 4):
+	def __init__(self, prevPob = [], gen = 0, probCross = 0.75, probMut = 0.05, cantCrom = 10):
+		#funcion que define todas las constantes implicadas en el ejercicio
+		#se generan los primeros cromosomas indicado		
 		self.poblacion = []
 		self.generacion = gen
 		self.probCross = probCross
@@ -20,8 +19,8 @@ class PoblacionIni:
 				self.poblacion.append(Cromosoma.Cromosoma(data))
 			
 
-
 	def __str__(self):
+		#Funcion que debuelve el contenido de la poblacion como un string
 		temp = ""
 		for i in self.poblacion:
 			for j in i:
@@ -30,15 +29,17 @@ class PoblacionIni:
 		return temp
 
 	def __getitem__(self, index):
+		#devuelve un objeto de la poblacion indicado por el indice
 		return self.poblacion[index]
 
-	#cambie fitness para que pida un cromosoma y no un index
 	def fitness (self, crom):
+		#calcula el fitness de cada cromosoma
 		total = self.totalFitness()
 		temp = (crom.funcValue())/total
 		return "{:.2}".format(temp)
 
 	def totalFitness (self):
+		#calcula el fitness total de la suma de todos los cromosomas
 		total = 0
 		for i in self.poblacion:
 			try:
@@ -48,43 +49,22 @@ class PoblacionIni:
 		return total
 
 	def ruleta(self):
+		#Genera la ruleta
 		Arrtemp = []
 		for i in range(len(self.poblacion)):
-			Arrtemp += [i] *int(float(self.fitness(self.poblacion[i]))* 100)
-				
-		#Arrtemp = [0] *int(float(self.fitness(self.poblacion[0]))* 100) + [1] * int(float(self.fitness(self.poblacion[1]))* 100) + [2] * int(float(self.fitness(self.poblacion[2]))* 100) + [3] * int(float(self.fitness(self.poblacion[3]))* 100)
-		
+			Arrtemp += [i] *int(float(self.fitness(self.poblacion[i]))* 100)		
 		return random.choice(Arrtemp)
 
-		"""
-		x=random.random()
-		sum = float(self.fitness(self.poblacion[0]))
-		if x <sum:
-			return self.poblacion[0]
-		else:
-			sum += float(self.fitness(self.poblacion[1]))
-			if x < sum:
-				return self.poblacion[1]
-			else:
-				sum += float(self.fitness(self.poblacion[2]))
-				if x < sum:
-					return self.poblacion[2]
-				else:
-					return self.poblacion[3]
-"""
 	def father (self):
+		#se guardan los padres generados en la ruleta
 		self.fathers = []
 		for i in range(len(self.poblacion)):
 			self.fathers.append(self.poblacion[self.ruleta()])
 
 	def crossover(self, cromosoma1, cromosoma2):
-		#devuelve un arreglo con 2 hijos 
+		#devuelve 2  cromosomas hijos 
 		temp = random.randint(0,len(cromosoma2.cromosoma)-1)
 		tempCrom = []
-		#cromTemp1 = Cromosoma.Cromosoma()
-		#cromTemp2 = Cromosoma.Cromosoma()
-
-		#cromosoma1.cromosoma.clear()
 		for i in range(len(cromosoma2.cromosoma)):
 			if i <= temp:
 				tempCrom.append(cromosoma1[i])
@@ -92,7 +72,6 @@ class PoblacionIni:
 				tempCrom.append(cromosoma2[i])
 		cromTemp1 = Cromosoma.Cromosoma(tempCrom, len(cromosoma2.cromosoma))
 		tempCrom.clear()
-		#cromosoma2.cromosoma.clear()
 		for i in range(len(cromosoma2.cromosoma)):
 			if i <= temp:
 				tempCrom.append(cromosoma2[i])
@@ -103,6 +82,7 @@ class PoblacionIni:
 		return[cromTemp1,cromTemp2]
 
 	def makeChildren(self):
+		#funcion en la que se crean los hijos en base al crossover o mutacion
 		children = []
 		self.father()
 		for i in range(len(self.poblacion)//2):
@@ -128,7 +108,7 @@ class PoblacionIni:
 		self.generacion += 1
 
 	def printAll(self):
-		#devuelde un string con todos los datos de la generacion de forma ordenada
+		#devuelve un string con todos los datos de la generacion de forma ordenada
 		#variables temporales para almacenar otros datos
 		strDevolver = ""
 		sumaTemp = 0
@@ -137,14 +117,14 @@ class PoblacionIni:
 		# strDevolver almacena todo lo que se va a inprimir
 		strDevolver += "generacion {0}\n".format(self.generacion)
 		strDevolver += "---------------\n\n"
-		strDevolver += "Cromosoma\tValor\tFuncion\tFitness\n"
-		strDevolver += "___________________________________________\n"
+		strDevolver += "Cromosoma\t\t\t\tValor\t\tFuncion\tFitness\n"
+		strDevolver += "_________________________________________________________________________\n"
 
 		for i in self.poblacion:
 			try:
 				strDevolver += "{0}\t\t".format(i)
 				strDevolver += "{0}\t".format(i.value())
-				strDevolver += "{0}\t".format(i.funcValue())
+				strDevolver += "{0:.4f}\t".format(i.funcValue())
 				#sumaTemp almacena la suma del valor de los cromosomas evaluados en la funcion
 				sumaTemp += i.funcValue()
 				#maximo guarda el maximo de los cromosomas
@@ -154,10 +134,10 @@ class PoblacionIni:
 			except:
 				print ("segundo try" + i.__str__())
 
-		strDevolver += "___________________________________________\n"
-		strDevolver += "Suma\t\t\t{0}\t1\n".format(sumaTemp)
-		strDevolver += "Promedio\t\t{0}\t0.25\n".format(sumaTemp/4)
-		strDevolver += "Maximo\t\t\t{0}\t{1}\n".format(maximoTemp.funcValue(), self.fitness(maximoTemp))
+		strDevolver += "_________________________________________________________________________\n"
+		strDevolver += "Suma\t\t\t\t\t\t\t{0:.4f}\t1\n".format(sumaTemp)
+		strDevolver += "Promedio\t\t\t\t\t\t{0:.4f}\t0.1\n".format(sumaTemp/10)
+		strDevolver += "Maximo\t\t\t\t\t\t\t{0:.4f}\t{1}\n".format(maximoTemp.funcValue(), self.fitness(maximoTemp))
 
 		#devuelve el string puede verse en pantalla o guardarse en un .txt
 		return strDevolver

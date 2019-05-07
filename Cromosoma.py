@@ -3,7 +3,8 @@ import math
 
 class Cromosoma:
 
-	def __init__(self, data = None, cant = 5):
+	def __init__(self, data = None, cant = 30):
+		#Crea un cromosoma vacio y se insertan 0 y 1 aleatoriamente
 		self.cromosoma = []
 		if data == None:
 			for j in range(cant):
@@ -12,20 +13,22 @@ class Cromosoma:
 			self.cromosoma = data
 
 	def __iter__(self):
+		#Funcion que permite iterar en el cromosoma
 		return iter(self.cromosoma)
 
-	#permite imprimir el cromosoma
 	def __str__(self):
+		#Funcion que devuelve el contenido del cromosoma como un string
 		temp = ""
 		for i in self.cromosoma:
 			temp += i.__str__()
 		return temp
 
 	def __getitem__(self, index):
+		#Funcion que devuelve el valor de un cromosoma en el indice
 		return self.cromosoma[index]
 
-
 	def value(self):
+		#Convierte el cromosoma en un numero decimal
 		val = 0
 		for i in range(len(self.cromosoma)):
 				try:
@@ -35,14 +38,18 @@ class Cromosoma:
 		return int(val)
 
 	def funcValue(self):
-		val = math.pow(self.value(), 2)
-		return int(val)
+		#Devuelve el valor fitness del cromosoma
+		coef = (2**30)-1
+		val = (self.value()/coef)*2
+		#old val val = math.pow(self.value(), 2)
+		return val
 
 	def mutacion (self):
-		#muta al azar uno de los digitos del cromosoma
+		#Muta al azar uno de los digitos del cromosoma
 		temp = random.randint(0,len(self.cromosoma)-1)
 		self.cromosoma[temp] = abs(self.cromosoma[temp] - 1)
 
 	def saving(self):
+		#Guarda un cromosoma
 		temp = " ".join(str(x) for x in self.cromosoma)
 		return temp

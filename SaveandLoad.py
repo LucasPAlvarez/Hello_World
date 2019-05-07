@@ -2,7 +2,7 @@ import PoblacionIni
 import os
 import json
 
-#funcion para guardar la poblacion
+#Funcion para guardar la poblacion
 def Saving(myPobl):
 	with open("Data/savedPob", "wb") as save:
 			print("Saving.")
@@ -16,12 +16,11 @@ def Saving(myPobl):
 			for gen in myPobl.poblacion:
 				templine = (gen.saving()+ " ").encode("utf-8")
 				save.write(templine)
-			#save.writelines(x.saving().encode("utf-8") for x in myPobl.poblacion)
 			print("Saving Done\n")
 
 
-#funcion para cargar los datos de la anterior poblacion
-def Loading(cromLenght = 5, pobLength = 4):
+#Funcion para cargar los datos de la anterior poblacion
+def Loading(cromLenght = 30, pobLength = 10):
 	load = open("Data/savedPob", "rb")
 	print("Loading.")
 	gen = int(load.readline().decode("utf-8"))
@@ -50,7 +49,7 @@ def Loading(cromLenght = 5, pobLength = 4):
 	print("Loading Done\n")
 	return PoblacionIni.PoblacionIni(prevPob, gen, probCross = pCross, probMut = pMut, cantCrom = pobLength)
 
-#guarda todas las generaciones para poder verlas en un archivo .txt
+#Guarda todas las generaciones para poder verlas en un archivo .txt
 def saveRecord(texto):
 	if not os.path.isfile("Data/pasado.txt"):
 		pathFile = open("Data/pasado.txt", "w")
@@ -64,28 +63,32 @@ def saveRecord(texto):
 	pathFile.close()
 
 
-#guarda todas las generaciones para poder representarlas en una frafica
+#Guarda todas las generaciones para poder representarlas en una grafica
 def saveHistory(myPobl):
-	#seting up some values to save
-	mFitness = 0
+	#Configura algunos valores para guardar
+	prome = 0
 	mValue = 0
+	lValue = 2
 	for pob in myPobl.poblacion:
-		if mFitness < float(myPobl.fitness(pob)):
-			mFitness = float(myPobl.fitness(pob))
-		if mValue < pob.value():
-			mValue = pob.value()
+		temp = pob.funcValue()
+		if mValue < temp:
+			mValue = temp
+		if lValue > temp:
+			lValue = temp
+		prome = prome + temp
 
-	#if there is not a json file then create new data
+
+	#Si no hay un archivo json, entonces crea datos nuevos
 	if not os.path.isfile("Data/data.json"):
-		newData ={"totalFitness":[], "maxFitness":[], "maxValue":[]}
+		newData ={"minValue":[], "Promedio":[], "maxValue":[]}
 		
 	else:
 		with open("Data/data.json") as jl:
 			newData = json.load(jl)
 
-	#add the new data then store it
-	newData["totalFitness"].append(myPobl.totalFitness())
-	newData["maxFitness"].append(mFitness)
+	#Añade los datos nuevos y luego los guarda
+	newData["minValue"].append(lValue)
+	newData["Promedio"].append(prome/4)
 	newData["maxValue"].append(mValue)
 	with open("Data/data.json", "w") as sj:
 		json.dump(newData, sj)
